@@ -1,0 +1,168 @@
+{
+    "currentVersion": "0.0.1",
+    "versions": [
+        {
+            "version": "0.0.1",
+            "name": "Web App Foundation",
+            "releaseDate": "2026-02-06",
+            "status": "current",
+            "description": "Core web application with GitHub OAuth, project management, and premium dashboard UI",
+            "features": [
+                {
+                    "title": "GitHub OAuth Integration",
+                    "description": "Secure authentication and repository access",
+                    "status": "completed"
+                },
+                {
+                    "title": "Project Management",
+                    "description": "Create, view, and delete projects with API keys",
+                    "status": "completed"
+                },
+                {
+                    "title": "Premium UI Design",
+                    "description": "Modern, responsive interface with dark theme",
+                    "status": "completed"
+                },
+                {
+                    "title": "User Dashboard",
+                    "description": "Project overview and management interface",
+                    "status": "completed"
+                },
+                {
+                    "title": "Logout Functionality",
+                    "description": "Secure session management and logout",
+                    "status": "completed"
+                }
+            ],
+            "technicalDetails": {
+                "frontend": [
+                    "Next.js 15",
+                    "React",
+                    "TypeScript",
+                    "Tailwind CSS"
+                ],
+                "backend": [
+                    "Node.js",
+                    "Express",
+                    "Prisma 6"
+                ],
+                "database": [
+                    "Supabase",
+                    "PostgreSQL"
+                ],
+                "authentication": [
+                    "Passport.js",
+                    "GitHub OAuth"
+                ]
+            }
+        },
+        {
+            "version": "0.1.0",
+            "name": "Node.js SDK",
+            "releaseDate": "TBD",
+            "status": "planned",
+            "description": "Error tracking and reporting SDK for Node.js applications",
+            "features": [
+                {
+                    "title": "Error Capture",
+                    "description": "Automatic error detection and capture",
+                    "status": "planned"
+                },
+                {
+                    "title": "Stack Trace Analysis",
+                    "description": "Detailed stack trace parsing and source mapping",
+                    "status": "planned"
+                },
+                {
+                    "title": "API Integration",
+                    "description": "Seamless integration with Rootly backend",
+                    "status": "planned"
+                },
+                {
+                    "title": "Performance Monitoring",
+                    "description": "Zero-overhead error tracking",
+                    "status": "planned"
+                }
+            ],
+            "technicalDetails": {
+                "sdk": [
+                    "TypeScript",
+                    "Source Maps",
+                    "Error Serialization"
+                ]
+            }
+        },
+        {
+            "version": "0.2.0",
+            "name": "VS Code Extension",
+            "releaseDate": "TBD",
+            "status": "planned",
+            "description": "IDE integration for inline error notifications and debugging",
+            "features": [
+                {
+                    "title": "Inline Error Display",
+                    "description": "Production errors shown directly in code",
+                    "status": "planned"
+                },
+                {
+                    "title": "Error Navigation",
+                    "description": "Jump to error locations in codebase",
+                    "status": "planned"
+                },
+                {
+                    "title": "Real-time Notifications",
+                    "description": "Instant alerts for new production errors",
+                    "status": "planned"
+                },
+                {
+                    "title": "GitHub Integration",
+                    "description": "Sync with repository structure",
+                    "status": "planned"
+                }
+            ],
+            "technicalDetails": {
+                "extension": [
+                    "VS Code API",
+                    "TypeScript",
+                    "WebSockets"
+                ]
+            }
+        },
+        {
+            "version": "0.3.0",
+            "name": "Error Dashboard",
+            "releaseDate": "TBD",
+            "status": "planned",
+            "description": "Real-time error monitoring, analytics, and debugging tools",
+            "features": [
+                {
+                    "title": "Error Analytics",
+                    "description": "Charts, trends, and error frequency analysis",
+                    "status": "planned"
+                },
+                {
+                    "title": "Error Grouping",
+                    "description": "Intelligent error clustering and deduplication",
+                    "status": "planned"
+                },
+                {
+                    "title": "Source Code Viewer",
+                    "description": "View error context with syntax highlighting",
+                    "status": "planned"
+                },
+                {
+                    "title": "Team Collaboration",
+                    "description": "Assign errors, add comments, track resolution",
+                    "status": "planned"
+                }
+            ],
+            "technicalDetails": {
+                "features": [
+                    "Real-time Updates",
+                    "Data Visualization",
+                    "Code Highlighting"
+                ]
+            }
+        }
+    ]
+}

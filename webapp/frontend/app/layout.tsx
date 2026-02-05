@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import VersionButton from './components/VersionButton';
 
 export const metadata: Metadata = {
     title: 'Rootly - Surface Production Errors in Your IDE',
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                {children}
+                <VersionButton />
+            </body>
         </html>
     );
 }
