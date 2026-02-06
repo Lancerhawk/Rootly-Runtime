@@ -1,11 +1,62 @@
 {
-    "currentVersion": "1.0.2",
+    "currentVersion": "1.0.3",
     "versions": [
+        {
+            "version": "1.0.3",
+            "name": "Production Hardening",
+            "releaseDate": "2026-02-06",
+            "status": "current",
+            "description": "Critical deployment fixes for cross-domain authentication and session management",
+            "features": [
+                {
+                    "title": "Cross-Site Cookie Support",
+                    "description": "SameSite=None configuration for Vercel-to-EC2 authentication",
+                    "status": "completed"
+                },
+                {
+                    "title": "Session Race Condition Fix",
+                    "description": "Explicit session saving before OAuth redirect to prevent login loops",
+                    "status": "completed"
+                },
+                {
+                    "title": "Route Architecture Cleanup",
+                    "description": "Separated OAuth and API routes to eliminate endpoint conflicts",
+                    "status": "completed"
+                },
+                {
+                    "title": "Security Hardening",
+                    "description": "Removed token exposure from API responses and added debug logging",
+                    "status": "completed"
+                },
+                {
+                    "title": "Proxy Trust Configuration",
+                    "description": "Added trust proxy for secure cookies behind reverse proxies",
+                    "status": "completed"
+                }
+            ],
+            "technicalDetails": {
+                "session": [
+                    "SameSite: 'none' in production",
+                    "Secure: true with trust proxy",
+                    "Explicit req.session.save()"
+                ],
+                "routes": [
+                    "/auth/* - OAuth flow (oauth.ts)",
+                    "/api/me - User data (auth.ts)",
+                    "Eliminated route overlap"
+                ],
+                "security": [
+                    "githubAccessToken stripped from responses",
+                    "Debug logging middleware",
+                    "Protocol verification"
+                ]
+            }
+        },
         {
             "version": "1.0.2",
             "name": "Production-Ready Error Ingestion",
             "releaseDate": "2026-02-06",
-            "status": "current",
+            "status": "implemented",
             "description": "Hardened ingest endpoint with strict validation and new incidents read API",
             "features": [
                 {

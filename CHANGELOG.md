@@ -7,6 +7,113 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+---
+
+## [1.0.3] - 2026-02-06
+
+### 🔒 Production Hardening & Deployment Fixes
+
+This patch release addresses critical production deployment issues discovered during the initial EC2 and Vercel deployment, ensuring reliable cross-domain authentication and session management.
+
+### Fixed
+
+#### Cross-Site Authentication
+- **Cookie Configuration**: Updated session cookies to use `SameSite=None` in production for cross-domain requests (Vercel frontend → EC2 backend)
+- **Secure Cookie Support**: Added `trust proxy` configuration for proper HTTPS detection behind reverse proxies
+- **Session Persistence**: Implemented explicit `req.session.save()` in OAuth callback to prevent race conditions during redirect
+
+#### Backend Architecture
+- **Route Separation**: Split OAuth routes into dedicated `oauth.ts` file to eliminate route overlap
+- **Clean Mounting**: Separated `/auth` (OAuth) and `/api` (User API) route mounting to prevent conflicts
+- **Import Organization**: Added proper import structure for new OAuth routes module
+
+#### Security Improvements
+- **Token Exposure**: Removed `githubAccessToken` from `/api/me` response to prevent sensitive data leakage
+- **Debug Logging**: Added comprehensive request logging middleware for production debugging
+- **Protocol Verification**: Added logging for `req.secure`, `X-Forwarded-Proto`, and session state
+
+### Technical Details
+
+#### Session Configuration
+```typescript
+cookie: {
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'production'
+}
+```
+
+#### Route Structure
+- `src/routes/oauth.ts` - GitHub OAuth flow (`/auth/github`, `/auth/github/callback`)
+- `src/routes/auth.ts` - User API endpoints (`/api/me`, `/api/logout`)
+
+#### Files Modified
+- `webapp/backend/src/index.ts` - Cookie config, proxy trust, debug middleware
+- `webapp/backend/src/routes/oauth.ts` - New file for OAuth routes
+- `webapp/backend/src/routes/auth.ts` - Removed OAuth routes, added token stripping
+
+### Deployment Notes
+- Requires backend restart after deployment
+- Frontend redeploy recommended for consistency
+- Users must re-authenticate after update
+
+---
+
+## [1.0.2] - 2026-02-06
+
+### 🚀 Phase 2 - Production-Ready Error Ingestion
+
+This release hardens the error ingestion system with strict validation, enhanced data capture, and adds a new API for reading incidents.
+
+### Added
+
+#### Hardened Ingest Endpoint
+- **Renamed endpoint**: `POST /api/ingest` (was `/api/ingest/error`)
+- **Structured payload format** with `error` and `context` objects
+- **Strict validation** for all required fields
+- **Commit SHA validation**: Enforces 40-character lowercase hex Git SHAs (`^[a-f0-9]{40}$`)
+- **Environment validation**: Only accepts "production" or "preview"
+- **ISO 8601 timestamp validation** for `occurred_at`
+- **Enhanced error responses** with specific error codes and messages
+- **201 Created** status code for successful ingestion
+
+#### New Database Fields
+- `stack_trace`: Full error stack trace (raw string)
+- `error_type`: Error classification (e.g., "TypeError", "ReferenceError")
+- `commit_sha`: Git commit SHA where error occurred (required, validated)
+- `environment`: Deployment environment ("production" or "preview")
+- `occurred_at`: Actual timestamp when error occurred (ISO 8601)
+- Removed deprecated `file_path` and `line_number` fields
+
+#### Incidents Read API
+- **New endpoint**: `GET /api/incidents`
+- **GitHub OAuth authentication** (JWT-based, same as dashboard)
+- **Query parameters**: `repo` (required), `status`, `limit`, `offset`
+- **Project ownership verification**: Only returns incidents for user's projects
+- **Filtering**: By status ("open" or "resolved")
+- **Pagination**: Configurable limit (1-100, default 50) and offset
+- **Ordered by** `occurred_at` DESC (newest first)
+- **Comprehensive error handling**: 401, 404, 400 responses
+
+### Changed
+- Ingest endpoint now requires structured payload instead of flat fields
+- API key verification improved with proper hash comparison loop
+- Database schema updated with new incident fields
+
+### Technical Details
+- **Migration**: `20260206002416_phase2_harden_ingest_final`
+- **Validation regex**: `/^[a-f0-9]{40}$/` for commit SHAs
+- **Response format**: Standardized error objects with `code` and `message`
+- **Authentication**: Dual authentication (API keys for ingest, JWT for incidents)
+
+### Documentation
+- Added `docs/postman-testing.md` with curl examples
+- Added `docs/phase2-migration.md` with upgrade guide
+- Added `docs/phase2-validation-checklist.md`
+- Added `docs/incidents-api-testing.md`
+- Added `docs/test-invalid-commit-sha.md`
+
+---
+
 ## [1.0.1] - 2026-02-06
 
 ### 🎉 Initial Release - Web App Foundation
@@ -85,62 +192,6 @@ The first release of Rootly establishes the core web application infrastructure 
 
 ---
 
-## [1.0.2] - 2026-02-06
-
-### 🚀 Phase 2 - Production-Ready Error Ingestion
-
-This release hardens the error ingestion system with strict validation, enhanced data capture, and adds a new API for reading incidents.
-
-### Added
-
-#### Hardened Ingest Endpoint
-- **Renamed endpoint**: `POST /api/ingest` (was `/api/ingest/error`)
-- **Structured payload format** with `error` and `context` objects
-- **Strict validation** for all required fields
-- **Commit SHA validation**: Enforces 40-character lowercase hex Git SHAs (`^[a-f0-9]{40}$`)
-- **Environment validation**: Only accepts "production" or "preview"
-- **ISO 8601 timestamp validation** for `occurred_at`
-- **Enhanced error responses** with specific error codes and messages
-- **201 Created** status code for successful ingestion
-
-#### New Database Fields
-- `stack_trace`: Full error stack trace (raw string)
-- `error_type`: Error classification (e.g., "TypeError", "ReferenceError")
-- `commit_sha`: Git commit SHA where error occurred (required, validated)
-- `environment`: Deployment environment ("production" or "preview")
-- `occurred_at`: Actual timestamp when error occurred (ISO 8601)
-- Removed deprecated `file_path` and `line_number` fields
-
-#### Incidents Read API
-- **New endpoint**: `GET /api/incidents`
-- **GitHub OAuth authentication** (JWT-based, same as dashboard)
-- **Query parameters**: `repo` (required), `status`, `limit`, `offset`
-- **Project ownership verification**: Only returns incidents for user's projects
-- **Filtering**: By status ("open" or "resolved")
-- **Pagination**: Configurable limit (1-100, default 50) and offset
-- **Ordered by** `occurred_at` DESC (newest first)
-- **Comprehensive error handling**: 401, 404, 400 responses
-
-### Changed
-- Ingest endpoint now requires structured payload instead of flat fields
-- API key verification improved with proper hash comparison loop
-- Database schema updated with new incident fields
-
-### Technical Details
-- **Migration**: `20260206002416_phase2_harden_ingest_final`
-- **Validation regex**: `/^[a-f0-9]{40}$/` for commit SHAs
-- **Response format**: Standardized error objects with `code` and `message`
-- **Authentication**: Dual authentication (API keys for ingest, JWT for incidents)
-
-### Documentation
-- Added `docs/postman-testing.md` with curl examples
-- Added `docs/phase2-migration.md` with upgrade guide
-- Added `docs/phase2-validation-checklist.md`
-- Added `docs/incidents-api-testing.md`
-- Added `docs/test-invalid-commit-sha.md`
-
----
-
 ## [Unreleased]
 
 ### Planned for v0.2.0 - Node.js SDK
@@ -171,8 +222,11 @@ This release hardens the error ingestion system with strict validation, enhanced
 
 ---
 
+
+
 ## Version History
 
+- **[1.0.3]** - 2026-02-06 - Production Hardening & Deployment Fixes
 - **[1.0.2]** - 2026-02-06 - Phase 2 (Production-Ready Error Ingestion)
 - **[1.0.1]** - 2026-02-06 - Initial release (Web App Foundation)
 

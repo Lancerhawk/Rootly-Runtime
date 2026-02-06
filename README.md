@@ -43,7 +43,15 @@ Rootly provides:
 
 ## ✨ Key Features
 
-### Current (v1.0.2 - Production-Ready Error Ingestion)
+### Current (v1.0.3 - Production Hardening)
+
+- ✅ **Cross-Site Cookie Support** - SameSite=None for cross-domain auth
+- ✅ **Session Race Condition Fix** - Explicit session saving before redirect
+- ✅ **Route Architecture Cleanup** - Separated OAuth and API routes
+- ✅ **Security Hardening** - Removed token exposure from API responses
+- ✅ **Proxy Trust Configuration** - Support for reverse proxy deployments
+
+### Previously Implemented (v1.0.2)
 
 - ✅ **Hardened Ingest Endpoint** - POST /api/ingest with strict validation
 - ✅ **Commit SHA Validation** - Enforces 40-char lowercase hex Git SHAs
