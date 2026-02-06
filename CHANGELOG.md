@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.0.1] - 2026-02-06
+## [1.0.1] - 2026-02-06
 
 ### 🎉 Initial Release - Web App Foundation
 
@@ -85,9 +85,65 @@ The first release of Rootly establishes the core web application infrastructure 
 
 ---
 
+## [1.0.2] - 2026-02-06
+
+### 🚀 Phase 2 - Production-Ready Error Ingestion
+
+This release hardens the error ingestion system with strict validation, enhanced data capture, and adds a new API for reading incidents.
+
+### Added
+
+#### Hardened Ingest Endpoint
+- **Renamed endpoint**: `POST /api/ingest` (was `/api/ingest/error`)
+- **Structured payload format** with `error` and `context` objects
+- **Strict validation** for all required fields
+- **Commit SHA validation**: Enforces 40-character lowercase hex Git SHAs (`^[a-f0-9]{40}$`)
+- **Environment validation**: Only accepts "production" or "preview"
+- **ISO 8601 timestamp validation** for `occurred_at`
+- **Enhanced error responses** with specific error codes and messages
+- **201 Created** status code for successful ingestion
+
+#### New Database Fields
+- `stack_trace`: Full error stack trace (raw string)
+- `error_type`: Error classification (e.g., "TypeError", "ReferenceError")
+- `commit_sha`: Git commit SHA where error occurred (required, validated)
+- `environment`: Deployment environment ("production" or "preview")
+- `occurred_at`: Actual timestamp when error occurred (ISO 8601)
+- Removed deprecated `file_path` and `line_number` fields
+
+#### Incidents Read API
+- **New endpoint**: `GET /api/incidents`
+- **GitHub OAuth authentication** (JWT-based, same as dashboard)
+- **Query parameters**: `repo` (required), `status`, `limit`, `offset`
+- **Project ownership verification**: Only returns incidents for user's projects
+- **Filtering**: By status ("open" or "resolved")
+- **Pagination**: Configurable limit (1-100, default 50) and offset
+- **Ordered by** `occurred_at` DESC (newest first)
+- **Comprehensive error handling**: 401, 404, 400 responses
+
+### Changed
+- Ingest endpoint now requires structured payload instead of flat fields
+- API key verification improved with proper hash comparison loop
+- Database schema updated with new incident fields
+
+### Technical Details
+- **Migration**: `20260206002416_phase2_harden_ingest_final`
+- **Validation regex**: `/^[a-f0-9]{40}$/` for commit SHAs
+- **Response format**: Standardized error objects with `code` and `message`
+- **Authentication**: Dual authentication (API keys for ingest, JWT for incidents)
+
+### Documentation
+- Added `docs/postman-testing.md` with curl examples
+- Added `docs/phase2-migration.md` with upgrade guide
+- Added `docs/phase2-validation-checklist.md`
+- Added `docs/incidents-api-testing.md`
+- Added `docs/test-invalid-commit-sha.md`
+
+---
+
 ## [Unreleased]
 
-### Planned for v0.1.0 - Node.js SDK
+### Planned for v0.2.0 - Node.js SDK
 - Error capture and serialization
 - Stack trace parsing with source maps
 - Context collection (user data, environment)
@@ -95,7 +151,7 @@ The first release of Rootly establishes the core web application infrastructure 
 - API integration for error submission
 - Zero-overhead performance monitoring
 
-### Planned for v0.2.0 - VS Code Extension
+### Planned for v0.3.0 - VS Code Extension
 - Real-time error notifications in IDE
 - Inline error display at code locations
 - Jump to error functionality
@@ -103,7 +159,7 @@ The first release of Rootly establishes the core web application infrastructure 
 - Error filtering and search
 - WebSocket integration for live updates
 
-### Planned for v0.3.0 - Error Dashboard
+### Planned for v0.4.0 - Error Dashboard
 - Real-time error monitoring
 - Error analytics and visualization
 - Error grouping and deduplication
@@ -117,7 +173,8 @@ The first release of Rootly establishes the core web application infrastructure 
 
 ## Version History
 
-- **[0.0.1]** - 2026-02-06 - Initial release (Web App Foundation)
+- **[1.0.2]** - 2026-02-06 - Phase 2 (Production-Ready Error Ingestion)
+- **[1.0.1]** - 2026-02-06 - Initial release (Web App Foundation)
 
 ---
 

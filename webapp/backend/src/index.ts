@@ -12,6 +12,7 @@ import authRoutes from './routes/auth';
 import githubRoutes from './routes/github';
 import projectRoutes from './routes/projects';
 import ingestRoutes from './routes/ingest';
+import incidentsRoutes from './routes/incidents';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -121,7 +122,8 @@ app.use('/auth', authRoutes);
 app.use('/api', authRoutes); // /api/me endpoint
 app.use('/api/github', githubRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/ingest', ingestRoutes);
+app.use('/api/incidents', incidentsRoutes); // JWT authenticated
+app.use('/api/ingest', ingestRoutes); // API key authenticated
 
 // Health check
 app.get('/health', (req, res) => {

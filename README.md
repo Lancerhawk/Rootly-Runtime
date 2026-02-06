@@ -43,7 +43,15 @@ Rootly provides:
 
 ## ✨ Key Features
 
-### Current (v0.0.1 - Web App Foundation)
+### Current (v1.0.2 - Production-Ready Error Ingestion)
+
+- ✅ **Hardened Ingest Endpoint** - POST /api/ingest with strict validation
+- ✅ **Commit SHA Validation** - Enforces 40-char lowercase hex Git SHAs
+- ✅ **Enhanced Data Capture** - Stack traces, error types, environment, timestamps
+- ✅ **Incidents Read API** - GET /api/incidents with JWT auth and filtering
+- ✅ **Comprehensive Documentation** - Testing guides and migration docs
+
+### Previously Implemented (v1.0.1)
 
 - ✅ **GitHub OAuth Authentication** - Secure login with GitHub
 - ✅ **Project Management** - Create and manage multiple projects
@@ -53,9 +61,9 @@ Rootly provides:
 
 ### Coming Soon
 
-- 🔄 **Node.js SDK** - Error tracking library for Node.js apps
-- 🔄 **VS Code Extension** - Inline error notifications in your editor
-- 🔄 **Error Dashboard** - Real-time monitoring and analytics
+- 🔄 **Node.js SDK** (v0.2.0) - Error tracking library for Node.js apps
+- 🔄 **VS Code Extension** (v0.3.0) - Inline error notifications in your editor
+- 🔄 **Error Dashboard** (v0.4.0) - Real-time monitoring and analytics
 - 🔄 **Team Collaboration** - Share and assign errors to team members
 - 🔄 **Source Maps** - Accurate stack traces for production code
 
@@ -410,28 +418,35 @@ The frontend will start on `http://localhost:3000`
 
 ## 🗺️ Roadmap
 
-### Phase 1: Web App Foundation ✅ (Current - v0.0.1)
+### Phase 1: Web App Foundation ✅ (v1.0.0)
 - [x] GitHub OAuth authentication
 - [x] Project management
 - [x] API key generation
 - [x] User dashboard
 - [x] Premium UI design
 
-### Phase 2: Node.js SDK 🔄 (v0.1.0)
+### Phase 2: Production-Ready Error Ingestion ✅ (Current - v1.0.2)
+- [x] Hardened ingest endpoint (POST /api/ingest)
+- [x] Strict validation (commit SHA, environment, timestamps)
+- [x] Enhanced data capture (stack traces, error types)
+- [x] Incidents read API (GET /api/incidents)
+- [x] Comprehensive documentation
+
+### Phase 3: Node.js SDK 🔄 (v0.2.0)
 - [ ] Error capture and serialization
 - [ ] Stack trace parsing
 - [ ] Source map support
 - [ ] Context collection
 - [ ] API integration
 
-### Phase 3: VS Code Extension 🔄 (v0.2.0)
+### Phase 4: VS Code Extension 🔄 (v0.3.0)
 - [ ] Real-time error notifications
 - [ ] Inline error display
 - [ ] Jump to error location
 - [ ] GitHub repository sync
 - [ ] Error filtering
 
-### Phase 4: Error Dashboard 🔄 (v0.3.0)
+### Phase 5: Error Dashboard 🔄 (v0.4.0)
 - [ ] Error analytics and charts
 - [ ] Error grouping and deduplication
 - [ ] Source code viewer
@@ -477,7 +492,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Built with modern web technologies and a passion for improving developer experience.
 
-**Current Version**: 0.0.1 - Web App Foundation
+**Current Version**: 1.0.2 - Production-Ready Error Ingestion
 
 ---
 

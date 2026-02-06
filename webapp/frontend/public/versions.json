@@ -1,11 +1,61 @@
 {
-    "currentVersion": "0.0.1",
+    "currentVersion": "1.0.2",
     "versions": [
         {
-            "version": "0.0.1",
-            "name": "Web App Foundation",
+            "version": "1.0.2",
+            "name": "Production-Ready Error Ingestion",
             "releaseDate": "2026-02-06",
             "status": "current",
+            "description": "Hardened ingest endpoint with strict validation and new incidents read API",
+            "features": [
+                {
+                    "title": "Hardened Ingest Endpoint",
+                    "description": "POST /api/ingest with strict validation for commit SHA, environment, and timestamps",
+                    "status": "completed"
+                },
+                {
+                    "title": "Enhanced Data Capture",
+                    "description": "Stack traces, error types, commit SHAs, environment, and occurrence timestamps",
+                    "status": "completed"
+                },
+                {
+                    "title": "Incidents Read API",
+                    "description": "GET /api/incidents with JWT auth, filtering, and pagination",
+                    "status": "completed"
+                },
+                {
+                    "title": "Commit SHA Validation",
+                    "description": "Enforces 40-character lowercase hex Git SHAs",
+                    "status": "completed"
+                },
+                {
+                    "title": "Comprehensive Documentation",
+                    "description": "Testing guides, migration docs, and API examples",
+                    "status": "completed"
+                }
+            ],
+            "technicalDetails": {
+                "validation": [
+                    "Commit SHA regex: ^[a-f0-9]{40}$",
+                    "Environment: production/preview only",
+                    "ISO 8601 timestamps"
+                ],
+                "api": [
+                    "POST /api/ingest (API key auth)",
+                    "GET /api/incidents (JWT auth)",
+                    "201 Created responses"
+                ],
+                "database": [
+                    "New fields: stack_trace, error_type, commit_sha, environment, occurred_at",
+                    "Migration: phase2_harden_ingest_final"
+                ]
+            }
+        },
+        {
+            "version": "1.0.1",
+            "name": "Web App Foundation",
+            "releaseDate": "2026-02-06",
+            "status": "implemented",
             "description": "Core web application with GitHub OAuth, project management, and premium dashboard UI",
             "features": [
                 {
@@ -57,7 +107,7 @@
             }
         },
         {
-            "version": "0.1.0",
+            "version": "0.2.0",
             "name": "Node.js SDK",
             "releaseDate": "TBD",
             "status": "planned",
@@ -93,7 +143,7 @@
             }
         },
         {
-            "version": "0.2.0",
+            "version": "0.3.0",
             "name": "VS Code Extension",
             "releaseDate": "TBD",
             "status": "planned",
@@ -129,7 +179,7 @@
             }
         },
         {
-            "version": "0.3.0",
+            "version": "0.4.0",
             "name": "Error Dashboard",
             "releaseDate": "TBD",
             "status": "planned",

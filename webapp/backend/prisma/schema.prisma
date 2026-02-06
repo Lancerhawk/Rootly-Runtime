@@ -14,24 +14,22 @@ model User {
   githubEmail    String?   @map("github_email")
   avatarUrl      String?   @map("avatar_url")
   createdAt      DateTime  @default(now()) @map("created_at")
-  
   projects       Project[]
-  
+
   @@map("users")
 }
 
 model Project {
-  id           String    @id @default(uuid())
-  projectId    String    @unique @map("project_id")
-  ownerUserId  String    @map("owner_user_id")
-  repoFullName String    @unique @map("repo_full_name")
-  platform     String    @default("vercel")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  
-  owner        User      @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  id           String     @id @default(uuid())
+  projectId    String     @unique @map("project_id")
+  ownerUserId  String     @map("owner_user_id")
+  repoFullName String     @unique @map("repo_full_name")
+  platform     String     @default("vercel")
+  createdAt    DateTime   @default(now()) @map("created_at")
   apiKey       ApiKey?
   incidents    Incident[]
-  
+  owner        User       @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+
   @@map("projects")
 }
 
@@ -41,24 +39,34 @@ model ApiKey {
   keyHash   String    @map("key_hash")
   createdAt DateTime  @default(now()) @map("created_at")
   revokedAt DateTime? @map("revoked_at")
-  
   project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  
+
   @@map("api_keys")
 }
 
 model Incident {
-  id           String   @id @default(uuid())
-  incidentId   String   @unique @map("incident_id")
-  projectId    String   @map("project_id")
-  repoFullName String   @map("repo_full_name")
-  status       String   @default("open")
-  summary      String
-  filePath     String?  @map("file_path")
-  lineNumber   Int?     @map("line_number")
-  createdAt    DateTime @default(now()) @map("created_at")
+  id          String   @id @default(uuid())
+  incidentId  String   @unique @map("incident_id")
+  projectId   String   @map("project_id")
+  repoFullName String  @map("repo_full_name")
+  status      String   @default("open")
+  summary     String
+  stackTrace  String?  @map("stack_trace")
+  errorType   String?  @map("error_type")
+  commitSha   String   @map("commit_sha")
+  environment String
+  occurredAt  DateTime @map("occurred_at")
+  createdAt   DateTime @default(now()) @map("created_at")
   
-  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
   @@map("incidents")
+}
+
+model session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
 }
