@@ -1,17 +1,17 @@
-# @rootly/runtime
+# rootly-runtime
 
 Production-grade runtime error tracking for Node.js applications.
 
 ## Installation
 
 ```bash
-npm install @rootly/runtime
+npm install rootly-runtime
 ```
 
 ## Quick Start
 
 ```typescript
-import { init } from '@rootly/runtime';
+import { init } from 'rootly-runtime';
 
 // Initialize at app startup
 init({
@@ -26,7 +26,7 @@ init({
 ### Basic Setup (Required)
 
 ```typescript
-import { init } from '@rootly/runtime';
+import { init } from 'rootly-runtime';
 
 init({
   apiKey: process.env.ROOTLY_API_KEY!,  // Required: Get from Rootly dashboard
@@ -46,7 +46,7 @@ init({
 ### Manual Error Capture
 
 ```typescript
-import { capture } from '@rootly/runtime';
+import { capture } from 'rootly-runtime';
 
 try {
   // Your code...
@@ -66,7 +66,7 @@ try {
 ### Severity Levels (New in v1.2.0)
 
 ```typescript
-import { capture } from '@rootly/runtime';
+import { capture } from 'rootly-runtime';
 
 // Error (default)
 capture(error, { user_id: '123' }, 'error');
@@ -81,7 +81,7 @@ capture(error, { event: 'migration_complete' }, 'info');
 ### Wrap Functions (Auto-Capture)
 
 ```typescript
-import { wrap } from '@rootly/runtime';
+import { wrap } from 'rootly-runtime';
 
 // Wrap sync functions
 const processPayment = wrap((amount: number) => {
@@ -108,7 +108,7 @@ try {
 
 ```typescript
 import express from 'express';
-import { init, expressErrorHandler } from '@rootly/runtime';
+import { init, expressErrorHandler } from 'rootly-runtime';
 
 init({ apiKey: process.env.ROOTLY_API_KEY! });
 

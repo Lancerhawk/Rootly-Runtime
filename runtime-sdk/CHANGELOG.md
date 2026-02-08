@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to @rootly/runtime will be documented in this file.
+All notable changes to rootly-runtime will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -96,7 +96,7 @@ This release hardens the SDK for production use with critical bug fixes, perform
 
 ### 🎉 Initial Release
 
-First production release of @rootly/runtime SDK.
+First production release of rootly-runtime SDK.
 
 ### Added
 

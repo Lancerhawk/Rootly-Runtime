@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🎉 Runtime SDK Production Hardening
 
-This release hardens the `@rootly/runtime` SDK for production use with critical bug fixes, performance improvements, and a cleaner public API. The SDK is now production-ready with 283 lines of code (17 under the 300-line target).
+This release hardens the `rootly-runtime` SDK for production use with critical bug fixes, performance improvements, and a cleaner public API. The SDK is now production-ready with 283 lines of code (17 under the 300-line target).
 
 ### Added
 

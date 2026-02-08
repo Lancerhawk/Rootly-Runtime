@@ -45,7 +45,7 @@ Rootly provides:
 
 ### Current (v1.2.0 - Runtime SDK Production Hardening)
 
-- ✅ **Production-Ready SDK** - @rootly/runtime v1.2.0 with 283 lines of hardened code
+- ✅ **Production-Ready SDK** - rootly-runtime v1.2.0 with 283 lines of hardened code
 - ✅ **Severity Support** - Capture errors with `error`, `warning`, `info` levels
 - ✅ **Environment Normalization** - Automatic production/preview normalization with NODE_ENV fallback
 - ✅ **Debug Mode** - Optional stderr logging for SDK visibility

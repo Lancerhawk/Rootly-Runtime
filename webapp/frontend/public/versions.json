@@ -6,7 +6,7 @@
             "name": "Runtime SDK Production Hardening",
             "releaseDate": "2026-02-09",
             "status": "current",
-            "description": "Production-ready @rootly/runtime SDK with critical bug fixes, performance improvements, and clean public API",
+            "description": "Production-ready rootly-runtime SDK with critical bug fixes, performance improvements, and clean public API",
             "features": [
                 {
                     "title": "Severity Support",

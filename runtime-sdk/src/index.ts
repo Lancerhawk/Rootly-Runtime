@@ -1,5 +1,5 @@
 /**
- * @rootly/runtime - Production-grade runtime error tracking for Node.js
+ * rootly-runtime - Production-grade runtime error tracking for Node.js
  */
 
 import { captureError, setDebugMode } from './runtime';

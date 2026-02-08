@@ -128,7 +128,7 @@ export default function DocsPage() {
                                 <p className="text-zinc-400 mb-4">
                                     Add the Rootly Runtime SDK to your Node.js application:
                                 </p>
-                                <CodeBlock code="npm install @rootly/runtime" />
+                                <CodeBlock code="npm install rootly-runtime" />
                             </div>
 
                             <div>
@@ -142,7 +142,7 @@ export default function DocsPage() {
                                     Add this to your application entry point (e.g., <code className="bg-black/50 px-2 py-1 rounded text-sm text-indigo-400">index.ts</code> or <code className="bg-black/50 px-2 py-1 rounded text-sm text-indigo-400">server.ts</code>):
                                 </p>
                                 <CodeBlock
-                                    code={`import { init } from '@rootly/runtime';
+                                    code={`import { init } from 'rootly-runtime';
 
 // Required: Initialize with your API key
 init({
@@ -496,7 +496,7 @@ ROOTLY_API_KEY=your_api_key_here`}
                                     Capture handled errors with custom context and severity:
                                 </p>
                                 <CodeBlock
-                                    code={`import { capture } from '@rootly/runtime';
+                                    code={`import { capture } from 'rootly-runtime';
 
 try {
   // Your code...
@@ -515,7 +515,7 @@ try {
                                     Automatically capture 5xx errors in Express apps:
                                 </p>
                                 <CodeBlock
-                                    code={`import { expressErrorHandler } from '@rootly/runtime';
+                                    code={`import { expressErrorHandler } from 'rootly-runtime';
 
 // Add BEFORE your final error handler
 app.use(expressErrorHandler());
