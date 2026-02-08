@@ -1,0 +1,30 @@
+{
+    "name": "@rootly/runtime",
+    "version": "1.0.0",
+    "description": "Minimal runtime error tracking for Node.js production apps",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "error-tracking",
+        "production",
+        "monitoring",
+        "rootly"
+    ],
+    "author": "Rootly",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.3.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Lancerhawk/Project-Rootly"
+    }
+}
