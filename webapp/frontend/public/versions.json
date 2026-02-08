@@ -1,11 +1,74 @@
 {
-    "currentVersion": "1.1.0",
+    "currentVersion": "1.2.0",
     "versions": [
+        {
+            "version": "1.2.0",
+            "name": "Runtime SDK Production Hardening",
+            "releaseDate": "2026-02-09",
+            "status": "current",
+            "description": "Production-ready @rootly/runtime SDK with critical bug fixes, performance improvements, and clean public API",
+            "features": [
+                {
+                    "title": "Severity Support",
+                    "description": "Capture errors with error/warning/info severity levels",
+                    "status": "completed"
+                },
+                {
+                    "title": "Environment Normalization",
+                    "description": "Automatic production/preview normalization with NODE_ENV fallback",
+                    "status": "completed"
+                },
+                {
+                    "title": "Debug Mode",
+                    "description": "Optional stderr logging for SDK visibility and troubleshooting",
+                    "status": "completed"
+                },
+                {
+                    "title": "Recursive Capture Protection",
+                    "description": "Symbol flag prevents infinite loops if SDK throws errors",
+                    "status": "completed"
+                },
+                {
+                    "title": "Stable Fingerprinting",
+                    "description": "Improved deduplication with normalized whitespace and consistent stack parsing",
+                    "status": "completed"
+                },
+                {
+                    "title": "Hard Memory Cap",
+                    "description": "Max 500 fingerprints with auto-cleanup to prevent unbounded growth",
+                    "status": "completed"
+                },
+                {
+                    "title": "Optimized Rate Limiter",
+                    "description": "O(n) performance with single splice operation",
+                    "status": "completed"
+                },
+                {
+                    "title": "Clean Public API",
+                    "description": "Removed apiUrl from InitOptions, use ROOTLY_API_URL env var for advanced config",
+                    "status": "completed"
+                }
+            ],
+            "technicalDetails": {
+                "sdk": [
+                    "283 lines (17 under 300 target)",
+                    "Zero dependencies",
+                    "TypeScript with full type definitions",
+                    "Backward compatible"
+                ],
+                "bugFixes": [
+                    "Environment fallback uses NODE_ENV",
+                    "Removed dangerous listener guards",
+                    "Fixed transport decrement bug",
+                    "Nullish coalescing for severity"
+                ]
+            }
+        },
         {
             "version": "1.1.0",
             "name": "IDE Extension Release",
             "releaseDate": "2026-02-08",
-            "status": "current",
+            "status": "implemented",
             "description": "Professional VS Code extension with Go to Error functionality, expandable incident cards, and real-time notifications",
             "features": [
                 {
@@ -210,42 +273,6 @@
                 "authentication": [
                     "Passport.js",
                     "GitHub OAuth"
-                ]
-            }
-        },
-        {
-            "version": "0.2.0",
-            "name": "Node.js SDK",
-            "releaseDate": "TBD",
-            "status": "planned",
-            "description": "Error tracking and reporting SDK for Node.js applications",
-            "features": [
-                {
-                    "title": "Error Capture",
-                    "description": "Automatic error detection and capture",
-                    "status": "planned"
-                },
-                {
-                    "title": "Stack Trace Analysis",
-                    "description": "Detailed stack trace parsing and source mapping",
-                    "status": "planned"
-                },
-                {
-                    "title": "API Integration",
-                    "description": "Seamless integration with Rootly backend",
-                    "status": "planned"
-                },
-                {
-                    "title": "Performance Monitoring",
-                    "description": "Zero-overhead error tracking",
-                    "status": "planned"
-                }
-            ],
-            "technicalDetails": {
-                "sdk": [
-                    "TypeScript",
-                    "Source Maps",
-                    "Error Serialization"
                 ]
             }
         },

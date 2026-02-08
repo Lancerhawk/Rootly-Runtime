@@ -160,7 +160,7 @@ export default function HomePage() {
                                     <div className="whitespace-nowrap">
                                         <span className="text-zinc-500">$</span>{' '}
                                         <span className="text-indigo-400">npm install</span>{' '}
-                                        <span className="text-white">@rootly/sdk</span>
+                                        <span className="text-white">@rootly/runtime</span>
                                     </div>
                                 </div>
                             </div>

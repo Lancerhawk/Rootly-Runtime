@@ -1,140 +1,117 @@
-import * as https from 'https';
+/**
+ * @rootly/runtime - Production-grade runtime error tracking for Node.js
+ */
+
+import { captureError, setDebugMode } from './runtime';
+import { getPendingRequests } from './transport';
 
 interface InitOptions {
     apiKey: string;
-    environment?: 'production' | 'preview';
+    environment?: string;
+    debug?: boolean;
 }
 
-interface ErrorPayload {
-    error: {
-        message: string;
-        type: string;
-        stack: string;
-    };
-    context: {
-        commit_sha: string;
-        environment: string;
-        occurred_at: string;
-    };
-}
+const DEFAULT_API_URL = 'https://3.111.33.111.nip.io';
 
 let isInitialized = false;
 let apiKey: string;
-let environment: string;
+let environment: 'production' | 'preview';
+let apiUrl: string;
 
-/**
- * Initialize Rootly runtime error tracking
- */
+function normalizeEnvironment(env?: string): 'production' | 'preview' {
+    if (!env) return 'production';
+    const normalized = env.toLowerCase().trim();
+    return (normalized === 'production' || normalized === 'prod') ? 'production' : 'preview';
+}
+
 export function init(options: InitOptions): void {
     try {
-        // Validate API key
-        if (!options.apiKey || typeof options.apiKey !== 'string') {
-            return; // Fail silently
-        }
-
-        if (isInitialized) {
-            return; // Already initialized
-        }
+        if (!options.apiKey || typeof options.apiKey !== 'string') return;
+        if (isInitialized) return;
 
         apiKey = options.apiKey;
-        environment = options.environment || process.env.NODE_ENV || 'production';
+        environment = normalizeEnvironment(options.environment || process.env.NODE_ENV);
+        apiUrl = process.env.ROOTLY_API_URL?.trim() || DEFAULT_API_URL;
         isInitialized = true;
 
-        // Register error handlers (prepend to run before other handlers)
+        if (options.debug) setDebugMode(true);
+
         process.prependListener('uncaughtException', handleError);
         process.prependListener('unhandledRejection', handleRejection);
+
+        process.on('beforeExit', () => {
+            if (getPendingRequests() > 0) setTimeout(() => { }, 200);
+        });
+        process.on('SIGTERM', () => {
+            if (getPendingRequests() > 0) setTimeout(() => { }, 200);
+        });
     } catch (error) {
-        // Fail silently - never crash the host app
+        // Fail silently
     }
 }
 
-/**
- * Handle uncaught exceptions
- */
-function handleError(error: Error): void {
+export function capture(error: Error, extraContext?: any, severity?: 'error' | 'warning' | 'info'): void {
     try {
-        captureError(error);
+        if (!apiKey) return;
+        captureError(error, apiKey, environment, apiUrl, extraContext, severity);
     } catch (err) {
         // Fail silently
     }
 }
 
-/**
- * Handle unhandled promise rejections
- */
+export function wrap<T extends (...args: any[]) => any>(fn: T): T {
+    return ((...args: any[]) => {
+        try {
+            const result = fn(...args);
+            if (result && typeof result.then === 'function') {
+                return result.catch((error: any) => {
+                    const err = error instanceof Error ? error : new Error(String(error));
+                    capture(err);
+                    throw error;
+                });
+            }
+            return result;
+        } catch (error) {
+            const err = error instanceof Error ? error : new Error(String(error));
+            capture(err);
+            throw error;
+        }
+    }) as T;
+}
+
+export function expressErrorHandler() {
+    return (err: any, req: any, res: any, next: any): void => {
+        try {
+            if (!apiKey) return next(err);
+            if (res.statusCode >= 500) {
+                const error = err instanceof Error ? err : new Error(String(err));
+                const extraContext = {
+                    source: 'express',
+                    method: req.method,
+                    path: req.path || req.url,
+                    status_code: res.statusCode,
+                };
+                captureError(error, apiKey, environment, apiUrl, extraContext);
+            }
+            next(err);
+        } catch (error) {
+            next(err);
+        }
+    };
+}
+
+function handleError(error: Error): void {
+    try {
+        captureError(error, apiKey, environment, apiUrl);
+    } catch (err) {
+        // Fail silently
+    }
+}
+
 function handleRejection(reason: any): void {
     try {
         const error = reason instanceof Error ? reason : new Error(String(reason));
-        captureError(error);
-    } catch (err) {
-        // Fail silently
-    }
-}
-
-/**
- * Capture and send error to backend
- */
-function captureError(error: Error): void {
-    try {
-        // Extract commit SHA from environment
-        const commitSha = process.env.VERCEL_GIT_COMMIT_SHA || '';
-
-        // Build payload
-        const payload: ErrorPayload = {
-            error: {
-                message: error.message || 'Unknown error',
-                type: error.name || 'Error',
-                stack: error.stack || 'No stack trace available',
-            },
-            context: {
-                commit_sha: commitSha,
-                environment: environment,
-                occurred_at: new Date().toISOString(),
-            },
-        };
-
-        // Send to backend
-        sendToBackend(payload);
-    } catch (err) {
-        // Fail silently
-    }
-}
-
-/**
- * Send payload to Rootly backend using native https module
- */
-function sendToBackend(payload: ErrorPayload): void {
-    try {
-        const data = JSON.stringify(payload);
-
-        const options = {
-            hostname: '3.111.33.111.nip.io',
-            port: 443,
-            path: '/api/ingest',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': Buffer.byteLength(data),
-                'Authorization': `Bearer ${apiKey}`,
-            },
-            timeout: 5000,
-        };
-
-        const req = https.request(options, (res) => {
-            // Consume response to free up memory
-            res.on('data', () => { });
-            res.on('end', () => { });
-        });
-
-        // Handle errors silently
-        req.on('error', () => { });
-        req.on('timeout', () => {
-            req.destroy();
-        });
-
-        // Send payload
-        req.write(data);
-        req.end();
+        captureError(error, apiKey, environment, apiUrl);
     } catch (err) {
         // Fail silently
     }

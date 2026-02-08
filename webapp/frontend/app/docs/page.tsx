@@ -1,8 +1,43 @@
 'use client';
 
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import ParticleBackground from '../components/ParticleBackground';
 import Link from 'next/link';
+
+// Code block component with copy button
+function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div className="relative group">
+            <div className="bg-black/50 rounded-lg p-4 font-mono text-sm overflow-x-auto border border-zinc-800">
+                <pre className="text-zinc-300 whitespace-pre">{code}</pre>
+            </div>
+            <button
+                onClick={handleCopy}
+                className="absolute top-3 right-3 p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                title="Copy code"
+            >
+                {copied ? (
+                    <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                ) : (
+                    <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                )}
+            </button>
+        </div>
+    );
+}
 
 export default function DocsPage() {
     return (
@@ -16,14 +51,73 @@ export default function DocsPage() {
                     <div className="mb-16">
                         <h1 className="text-5xl font-bold mb-4">Documentation</h1>
                         <p className="text-xl text-zinc-400">
-                            Everything you need to integrate Rootly into your application
+                            Integrate Rootly in under 2 minutes.
                         </p>
                     </div>
+
+                    {/* What Rootly Does */}
+                    <section className="mb-16">
+                        <div className="bg-gradient-to-br from-indigo-600/10 to-purple-600/10 border border-indigo-600/20 rounded-xl p-8">
+                            <h2 className="text-2xl font-bold mb-4">What Rootly Does</h2>
+                            <p className="text-zinc-300 mb-4 leading-relaxed">
+                                Rootly captures unexpected production crashes and surfaces them directly inside your IDE.
+                            </p>
+                            <p className="text-zinc-400 mb-4 text-sm">
+                                Rootly focuses on unhandled production crashes — not logging, performance metrics, or client-side monitoring.
+                            </p>
+                            <div className="mb-6 p-3 bg-blue-600/10 border border-blue-600/20 rounded-lg">
+                                <p className="text-sm text-blue-300">
+                                    <svg className="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Rootly Runtime SDK works in Node.js environments (server-side only).
+                                </p>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Never crashes your app</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Fails silently on errors</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Designed for minimal performance impact</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Deduplicates noisy errors</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Rate limits excessive reports</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <svg className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-zinc-300">Auto-detects commit SHA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     {/* Quick Start */}
                     <section className="mb-16">
                         <h2 className="text-3xl font-bold mb-6">Quick Start</h2>
-                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 space-y-6">
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 space-y-8">
                             <div>
                                 <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
                                     <span className="w-8 h-8 bg-indigo-600/20 rounded-lg flex items-center justify-center text-indigo-400 text-sm font-bold">
@@ -32,13 +126,9 @@ export default function DocsPage() {
                                     Install the SDK
                                 </h3>
                                 <p className="text-zinc-400 mb-4">
-                                    Add the Rootly SDK to your Node.js application:
+                                    Add the Rootly Runtime SDK to your Node.js application:
                                 </p>
-                                <div className="bg-black/50 rounded-lg p-4 font-mono text-sm">
-                                    <span className="text-zinc-500">$</span>{' '}
-                                    <span className="text-indigo-400">npm install</span>{' '}
-                                    <span className="text-white">@rootly/sdk</span>
-                                </div>
+                                <CodeBlock code="npm install @rootly/runtime" />
                             </div>
 
                             <div>
@@ -48,18 +138,37 @@ export default function DocsPage() {
                                     </span>
                                     Initialize in your code
                                 </h3>
-                                <div className="bg-black/50 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                                    <pre className="text-zinc-300">
-                                        {`import { Rootly } from '@rootly/sdk';
+                                <p className="text-zinc-400 mb-4">
+                                    Add this to your application entry point (e.g., <code className="bg-black/50 px-2 py-1 rounded text-sm text-indigo-400">index.ts</code> or <code className="bg-black/50 px-2 py-1 rounded text-sm text-indigo-400">server.ts</code>):
+                                </p>
+                                <CodeBlock
+                                    code={`import { init } from '@rootly/runtime';
 
-const rootly = new Rootly({
-  projectId: process.env.ROOTLY_PROJECT_ID,
-  apiKey: process.env.ROOTLY_API_KEY,
-});
-
-// Errors are automatically captured
-rootly.captureErrors();`}
-                                    </pre>
+// Required: Initialize with your API key
+init({
+  apiKey: process.env.ROOTLY_API_KEY!
+});`}
+                                />
+                                <div className="mt-4 p-4 bg-indigo-600/10 border border-indigo-600/20 rounded-lg">
+                                    <p className="text-sm text-zinc-300 font-semibold mb-2 flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Captured automatically:
+                                    </p>
+                                    <ul className="text-sm text-zinc-400 space-y-1">
+                                        <li>• <code className="text-indigo-400">uncaughtException</code> - Unhandled errors</li>
+                                        <li>• <code className="text-indigo-400">unhandledRejection</code> - Unhandled promise rejections</li>
+                                        <li>• Express 5xx errors (when using middleware)</li>
+                                        <li>• Manual <code className="text-indigo-400">capture()</code> calls</li>
+                                        <li>• <code className="text-indigo-400">wrap()</code>-wrapped functions</li>
+                                    </ul>
+                                    <p className="text-sm text-zinc-500 mt-3 flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Intentionally not captured: 4xx errors, handled try/catch blocks, frontend errors
+                                    </p>
                                 </div>
                             </div>
 
@@ -68,17 +177,361 @@ rootly.captureErrors();`}
                                     <span className="w-8 h-8 bg-indigo-600/20 rounded-lg flex items-center justify-center text-indigo-400 text-sm font-bold">
                                         3
                                     </span>
-                                    Install IDE Extension
+                                    Get Your API Key
                                 </h3>
                                 <p className="text-zinc-400 mb-4">
-                                    Install the Rootly extension for VS Code or Cursor to see errors directly in your editor.
+                                    Create a project in your dashboard to get your API key. Add it to your environment variables:
                                 </p>
+                                <CodeBlock
+                                    code={`# .env
+ROOTLY_API_KEY=your_api_key_here`}
+                                />
                                 <Link
                                     href="/dashboard"
-                                    className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold transition-colors"
+                                    className="inline-block mt-4 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold transition-colors"
                                 >
-                                    Get Your API Keys
+                                    Get Your API Key
                                 </Link>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-indigo-600/20 rounded-lg flex items-center justify-center text-indigo-400 text-sm font-bold">
+                                        4
+                                    </span>
+                                    See it in action
+                                </h3>
+                                <p className="text-zinc-400 mb-4">
+                                    Test with a simple crash endpoint:
+                                </p>
+                                <CodeBlock
+                                    code={`app.get('/crash', () => {
+  throw new Error("Database connection failed");
+});`}
+                                />
+                                <div className="mt-4 p-4 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+                                    <p className="text-sm text-zinc-300 font-semibold mb-3">How it works:</p>
+                                    <ol className="text-sm text-zinc-400 space-y-2">
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-indigo-400 font-semibold">1.</span>
+                                            <span>Error happens in production</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-indigo-400 font-semibold">2.</span>
+                                            <span>SDK sends payload to backend</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-indigo-400 font-semibold">3.</span>
+                                            <span>Backend creates incident</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-indigo-400 font-semibold">4.</span>
+                                            <span>IDE extension polls and shows it</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-indigo-400 font-semibold">5.</span>
+                                            <span>Click to jump to exact line in code</span>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Commit SHA Detection */}
+                    <section className="mb-16">
+                        <h2 className="text-3xl font-bold mb-6">Automatic Commit SHA Detection</h2>
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
+                            <p className="text-zinc-300 mb-4 leading-relaxed">
+                                Rootly automatically detects your deployment commit SHA from environment variables. <strong className="text-white">No configuration required</strong> on popular platforms.
+                            </p>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="bg-black/30 rounded-lg p-4 border border-zinc-800">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <svg className="w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                        <span className="font-semibold">Vercel</span>
+                                    </div>
+                                    <code className="text-xs text-zinc-500">VERCEL_GIT_COMMIT_SHA</code>
+                                </div>
+                                <div className="bg-black/30 rounded-lg p-4 border border-zinc-800">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <svg className="w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                        <span className="font-semibold">GitHub Actions</span>
+                                    </div>
+                                    <code className="text-xs text-zinc-500">GITHUB_SHA</code>
+                                </div>
+                                <div className="bg-black/30 rounded-lg p-4 border border-zinc-800">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <svg className="w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                        <span className="font-semibold">Render</span>
+                                    </div>
+                                    <code className="text-xs text-zinc-500">RENDER_GIT_COMMIT</code>
+                                </div>
+                                <div className="bg-black/30 rounded-lg p-4 border border-zinc-800">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                        </svg>
+                                        <span className="font-semibold">Custom</span>
+                                    </div>
+                                    <code className="text-xs text-zinc-500">COMMIT_SHA</code>
+                                </div>
+                            </div>
+                            <p className="text-sm text-zinc-500 mt-4 flex items-center gap-2">
+                                <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                The commit SHA enables IDE jump-to-code functionality by matching errors to exact file versions.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* Built-in Protection */}
+                    <section className="mb-16">
+                        <h2 className="text-3xl font-bold mb-6">Built-in Protection</h2>
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
+                            <p className="text-zinc-300 mb-6 leading-relaxed">
+                                Rootly automatically deduplicates repeated errors and rate limits excessive reports to protect your app and backend.
+                            </p>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
+                                    <h4 className="font-semibold mb-3 text-indigo-400 flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Deduplication
+                                    </h4>
+                                    <p className="text-sm text-zinc-400">
+                                        Identical errors within a <strong className="text-white">10-second window</strong> are automatically deduplicated to prevent noise.
+                                    </p>
+                                </div>
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
+                                    <h4 className="font-semibold mb-3 text-indigo-400 flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Rate Limiting
+                                    </h4>
+                                    <p className="text-sm text-zinc-400">
+                                        Maximum <strong className="text-white">20 errors per minute</strong> to prevent overwhelming your backend during cascading failures.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SDK Features */}
+                    <section className="mb-16">
+                        <h2 className="text-3xl font-bold mb-6">SDK Features (v1.2.0)</h2>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {/* Production Hardening */}
+                            <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-indigo-600/50 transition-all">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold mb-2">Production Hardening</h3>
+                                        <ul className="space-y-2 text-sm text-zinc-400">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Environment normalization with NODE_ENV fallback</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Severity support (error/warning/info)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Recursive capture protection</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Stable fingerprinting algorithm</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Performance */}
+                            <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-indigo-600/50 transition-all">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold mb-2">Performance Optimized</h3>
+                                        <ul className="space-y-2 text-sm text-zinc-400">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Hard memory cap (500 max fingerprints)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Optimized rate limiter (O(n) performance)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Graceful shutdown request draining</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Zero dependencies</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Automatic Capture */}
+                            <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-indigo-600/50 transition-all">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold mb-2">Automatic Capture</h3>
+                                        <ul className="space-y-2 text-sm text-zinc-400">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Uncaught exceptions</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Unhandled promise rejections</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Express 5xx errors (middleware)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Function wrapping (wrap API)</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Production Safety */}
+                            <div className="bg-gradient-to-br from-zinc-900 to-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-indigo-600/50 transition-all">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="w-12 h-12 bg-indigo-600/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold mb-2">Production Safety</h3>
+                                        <ul className="space-y-2 text-sm text-zinc-400">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Fail-silent (never crashes app)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Error deduplication (10s window)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Rate limiting (20 errors/60s)</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-indigo-400 mt-1">•</span>
+                                                <span>Auto-detects commit SHA</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Optional Configuration */}
+                    <section className="mb-16">
+                        <h2 className="text-3xl font-bold mb-6">Optional Configuration</h2>
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 space-y-8">
+                            <div>
+                                <h3 className="text-xl font-semibold mb-3 text-indigo-400">Environment</h3>
+                                <p className="text-zinc-400 mb-4">
+                                    Specify your environment (defaults to <code className="bg-black/50 px-2 py-1 rounded text-sm text-indigo-400">NODE_ENV</code>):
+                                </p>
+                                <CodeBlock
+                                    code={`init({
+  apiKey: process.env.ROOTLY_API_KEY!,
+  environment: 'production' // or 'preview'
+});`}
+                                />
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-semibold mb-3 text-indigo-400">Debug Mode</h3>
+                                <p className="text-zinc-400 mb-4">
+                                    Enable debug logging to stderr for troubleshooting:
+                                </p>
+                                <CodeBlock
+                                    code={`init({
+  apiKey: process.env.ROOTLY_API_KEY!,
+  debug: true // Shows dedup, rate limiting, send events
+});`}
+                                />
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-semibold mb-3 text-indigo-400">Manual Error Capture</h3>
+                                <p className="text-zinc-400 mb-4">
+                                    Capture handled errors with custom context and severity:
+                                </p>
+                                <CodeBlock
+                                    code={`import { capture } from '@rootly/runtime';
+
+try {
+  // Your code...
+} catch (error) {
+  capture(error, { 
+    user_id: '123',
+    action: 'checkout' 
+  }, 'error'); // severity: 'error' | 'warning' | 'info'
+}`}
+                                />
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-semibold mb-3 text-indigo-400">Express Middleware</h3>
+                                <p className="text-zinc-400 mb-4">
+                                    Automatically capture 5xx errors in Express apps:
+                                </p>
+                                <CodeBlock
+                                    code={`import { expressErrorHandler } from '@rootly/runtime';
+
+// Add BEFORE your final error handler
+app.use(expressErrorHandler());
+
+app.use((err, req, res, next) => {
+  res.status(500).json({ error: err.message });
+});`}
+                                />
+                                <div className="mt-4 p-4 bg-amber-600/10 border border-amber-600/20 rounded-lg">
+                                    <p className="text-sm text-zinc-300 flex items-start gap-2">
+                                        <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        <span><strong>Important:</strong> This middleware captures <strong className="text-white">only 5xx errors</strong>. It does <strong className="text-white">NOT</strong> capture 4xx errors (validation, auth, etc.).</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -88,28 +541,28 @@ rootly.captureErrors();`}
                         <h2 className="text-3xl font-bold mb-6">Architecture</h2>
                         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
                             <p className="text-zinc-300 mb-6 leading-relaxed">
-                                Rootly is a production-grade developer tooling platform that helps engineers understand WHY production failures happened and WHERE they originated in code.
+                                Rootly closes the loop between production failures and your editor.
                             </p>
                             <div className="grid md:grid-cols-2 gap-6">
-                                <div className="bg-black/30 rounded-lg p-6">
-                                    <h4 className="font-semibold mb-3 text-indigo-400">Runtime SDK</h4>
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
+                                    <h4 className="font-semibold mb-3 text-indigo-400">Runtime SDK (v1.2.0)</h4>
                                     <p className="text-sm text-zinc-400">
-                                        Lightweight NPM package that runs in your production environment. Captures errors with zero performance impact and sends telemetry to the backend.
+                                        NPM package with zero dependencies. Captures errors with deduplication, rate limiting, and graceful shutdown. Fail-silent design never crashes your app.
                                     </p>
                                 </div>
-                                <div className="bg-black/30 rounded-lg p-6">
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
                                     <h4 className="font-semibold mb-3 text-indigo-400">Backend Service</h4>
                                     <p className="text-sm text-zinc-400">
                                         Node.js API that receives error telemetry, parses stack traces, and correlates errors to exact file locations and line numbers.
                                     </p>
                                 </div>
-                                <div className="bg-black/30 rounded-lg p-6">
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
                                     <h4 className="font-semibold mb-3 text-indigo-400">Web Dashboard</h4>
                                     <p className="text-sm text-zinc-400">
                                         Project setup and management interface. Connect your GitHub repositories and generate API keys for your applications.
                                     </p>
                                 </div>
-                                <div className="bg-black/30 rounded-lg p-6">
+                                <div className="bg-black/30 rounded-lg p-6 border border-zinc-800">
                                     <h4 className="font-semibold mb-3 text-indigo-400">IDE Extension</h4>
                                     <p className="text-sm text-zinc-400">
                                         VS Code/Cursor extension that polls for incidents and displays them directly in your editor at the exact line where errors occurred.
@@ -123,92 +576,87 @@ rootly.captureErrors();`}
                     <section className="mb-16">
                         <h2 className="text-3xl font-bold mb-6">API Reference</h2>
                         <div className="space-y-4">
-                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold">
-                                    Authentication
+                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden group">
+                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold flex items-center justify-between">
+                                    <span>init(options)</span>
+                                    <svg className="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </summary>
                                 <div className="px-8 pb-6 text-zinc-300 space-y-4">
-                                    <p>Rootly uses two authentication methods:</p>
-                                    <ul className="list-disc list-inside space-y-2 text-sm">
-                                        <li><strong>GitHub OAuth</strong> - For dashboard and IDE extension (user authentication)</li>
-                                        <li><strong>API Keys</strong> - For SDK (ingest authentication)</li>
-                                    </ul>
+                                    <p className="text-sm">Initialize the SDK. Must be called before other functions.</p>
+                                    <CodeBlock
+                                        code={`interface InitOptions {
+  apiKey: string;        // Required: Your Rootly API key
+  environment?: string;  // Optional: 'production' or 'preview' (default: NODE_ENV)
+  debug?: boolean;       // Optional: Enable debug logging (default: false)
+}`}
+                                    />
                                 </div>
                             </details>
 
-                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold">
-                                    POST /api/ingest
+                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden group">
+                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold flex items-center justify-between">
+                                    <span>capture(error, context?, severity?)</span>
+                                    <svg className="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </summary>
                                 <div className="px-8 pb-6 text-zinc-300 space-y-4">
-                                    <p className="text-sm">Receive error telemetry from the SDK.</p>
-                                    <div className="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-                                        <pre>{`Authorization: Bearer <ingest_api_key>
+                                    <p className="text-sm">Manually capture an error with optional context and severity.</p>
+                                    <CodeBlock
+                                        code={`capture(
+  error: Error,
+  extraContext?: object,
+  severity?: 'error' | 'warning' | 'info'
+): void
 
-{
-  "error": {
-    "message": "Cannot read property 'id' of undefined",
-    "type": "TypeError",
-    "stack": "TypeError: Cannot read property...\\n  at checkout.ts:42:10"
-  },
-  "context": {
-    "commit_sha": "a1b2c3d4e5f6",
-    "environment": "production",
-    "occurred_at": "2026-02-06T02:30:00Z"
-  }
-}`}</pre>
-                                    </div>
+// Example
+capture(new Error('Payment failed'), { 
+  user_id: '123',
+  amount: 99.99 
+}, 'error');`}
+                                    />
                                 </div>
                             </details>
 
-                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold">
-                                    GET /api/incidents
+                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden group">
+                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold flex items-center justify-between">
+                                    <span>wrap(fn)</span>
+                                    <svg className="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </summary>
                                 <div className="px-8 pb-6 text-zinc-300 space-y-4">
-                                    <p className="text-sm">Query incidents for a repository (used by IDE extension).</p>
-                                    <div className="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-                                        <pre>{`GET /api/incidents?repo=owner/repo&status=open&limit=10
-Authorization: Bearer <user_token>
+                                    <p className="text-sm">Wrap a function to automatically capture errors. Works with sync and async functions.</p>
+                                    <CodeBlock
+                                        code={`wrap<T>(fn: T): T
 
-Response:
-{
-  "incidents": [{
-    "id": "inc_xyz789",
-    "error_message": "Cannot read property 'id' of undefined",
-    "file_path": "src/handlers/checkout.ts",
-    "line_number": 42,
-    "status": "open"
-  }]
-}`}</pre>
-                                    </div>
+// Example
+const safeFunction = wrap(async (userId: string) => {
+  const user = await fetchUser(userId);
+  return user;
+});`}
+                                    />
                                 </div>
                             </details>
 
-                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold">
-                                    POST /api/projects
+                            <details className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden group">
+                                <summary className="px-8 py-6 cursor-pointer hover:bg-zinc-800/50 transition-colors font-semibold flex items-center justify-between">
+                                    <span>expressErrorHandler()</span>
+                                    <svg className="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
                                 </summary>
                                 <div className="px-8 pb-6 text-zinc-300 space-y-4">
-                                    <p className="text-sm">Create a new project and get API keys.</p>
-                                    <div className="bg-black/50 rounded-lg p-4 font-mono text-xs overflow-x-auto">
-                                        <pre>{`POST /api/projects
-Authorization: Bearer <user_token>
+                                    <p className="text-sm">Express middleware for capturing 5xx errors. Place before your final error handler.</p>
+                                    <CodeBlock
+                                        code={`app.use(expressErrorHandler());
 
-{
-  "repo_owner": "username",
-  "repo_name": "my-app",
-  "platform": "vercel"
-}
-
-Response:
-{
-  "project": {
-    "id": "proj_abc123",
-    "ingest_api_key": "key_xyz789_SHOW_ONCE"
-  }
-}`}</pre>
-                                    </div>
+// Captures errors when res.statusCode >= 500
+// Ignores 4xx errors (validation, auth, etc.)
+// Always calls next(err) to continue error chain`}
+                                    />
                                 </div>
                             </details>
                         </div>
@@ -231,9 +679,9 @@ Response:
                                 </p>
                             </div>
                             <div>
-                                <h4 className="font-semibold mb-2 text-indigo-400">IDE Extension</h4>
+                                <h4 className="font-semibold mb-2 text-indigo-400">SDK Safety</h4>
                                 <p className="text-sm text-zinc-400">
-                                    The IDE extension is read-only and never writes to production. It polls the backend every 30-60 seconds using user authentication tokens.
+                                    The SDK is fail-silent and never crashes your application. All operations are wrapped in try-catch blocks. Network failures are silent.
                                 </p>
                             </div>
                         </div>
@@ -254,7 +702,7 @@ Response:
                                     Get Started
                                 </Link>
                                 <a
-                                    href="https://github.com"
+                                    href="https://github.com/Lancerhawk/Project-Rootly"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg font-semibold transition-colors"

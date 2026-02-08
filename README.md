@@ -43,7 +43,20 @@ Rootly provides:
 
 ## ✨ Key Features
 
-### Current (v1.1.0 - IDE Extension Release)
+### Current (v1.2.0 - Runtime SDK Production Hardening)
+
+- ✅ **Production-Ready SDK** - @rootly/runtime v1.2.0 with 283 lines of hardened code
+- ✅ **Severity Support** - Capture errors with `error`, `warning`, `info` levels
+- ✅ **Environment Normalization** - Automatic production/preview normalization with NODE_ENV fallback
+- ✅ **Debug Mode** - Optional stderr logging for SDK visibility
+- ✅ **Recursive Protection** - Symbol flag prevents infinite loops
+- ✅ **Stable Fingerprinting** - Improved deduplication with normalized whitespace
+- ✅ **Hard Memory Cap** - Max 500 fingerprints with auto-cleanup
+- ✅ **Optimized Rate Limiter** - O(n) performance
+- ✅ **Clean Public API** - Removed `apiUrl` from InitOptions (use `ROOTLY_API_URL` env var)
+- ✅ **Critical Bug Fixes** - Environment fallback, listener guards, transport counter
+
+### Previously Implemented (v1.1.0 - IDE Extension Release)
 
 - ✅ **Go to Error Location** - One-click navigation to exact file and line where errors occurred
 - ✅ **Expandable Incident Cards** - Click incidents to see environment, timestamps, and commit SHA
