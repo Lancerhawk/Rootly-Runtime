@@ -5,6 +5,10 @@ import VersionButton from './components/VersionButton';
 export const metadata: Metadata = {
     title: 'Rootly - Surface Production Errors in Your IDE',
     description: 'Developer platform for understanding production failures',
+    icons: {
+        icon: '/icon.svg',
+        apple: '/icon.png',
+    },
 };
 
 export default function RootLayout({
