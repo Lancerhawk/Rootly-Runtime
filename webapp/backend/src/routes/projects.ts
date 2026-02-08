@@ -186,4 +186,111 @@ router.delete('/:projectId', requireAuth, async (req, res, next) => {
     }
 });
 
+/**
+ * GET /api/projects/verify
+ * Verify if a repository is registered for the authenticated user
+ * Supports both session-based auth (dashboard) and API key auth (IDE extension)
+ */
+router.get('/verify', async (req, res, next) => {
+    try {
+        console.log('\n🔍 [VERIFY] Request received');
+        console.log('📋 Query params:', req.query);
+        console.log('🔑 Headers:', {
+            authorization: req.headers.authorization,
+            cookie: req.headers.cookie,
+            'x-api-key': req.headers['x-api-key']
+        });
+        console.log('👤 Session authenticated:', req.isAuthenticated());
+        console.log('👤 User from session:', req.user ? 'Yes' : 'No');
+
+        const { repo } = req.query;
+
+        if (!repo || typeof repo !== 'string') {
+            console.log('❌ [VERIFY] Missing repo parameter');
+            return res.status(400).json({
+                error: {
+                    code: 'MISSING_REPO',
+                    message: 'repo query parameter is required',
+                },
+            });
+        }
+
+        let userId: string | null = null;
+
+        // Try session-based auth first (for dashboard)
+        if (req.isAuthenticated() && req.user) {
+            userId = (req.user as any).id;
+            console.log('✅ [VERIFY] Authenticated via session, userId:', userId);
+        }
+        // Try API key auth (for IDE extension)
+        else {
+            const apiKey = req.headers['x-api-key'] as string;
+            console.log('🔑 [VERIFY] Trying API key auth, key provided:', !!apiKey);
+
+            if (apiKey) {
+                const hashedKey = await hashApiKey(apiKey);
+                console.log('🔑 [VERIFY] Hashed key:', hashedKey.substring(0, 10) + '...');
+
+                // Find API key first, then get the project
+                const apiKeyRecord = await prisma.apiKey.findFirst({
+                    where: { keyHash: hashedKey, revokedAt: null },
+                    include: { project: { include: { owner: true } } },
+                });
+
+                if (apiKeyRecord && apiKeyRecord.project) {
+                    userId = apiKeyRecord.project.ownerUserId;
+                    console.log('✅ [VERIFY] Authenticated via API key, userId:', userId, 'project:', apiKeyRecord.project.projectId);
+                } else {
+                    console.log('❌ [VERIFY] Invalid API key - no project found with this key hash');
+                }
+            }
+        }
+
+        if (!userId) {
+            console.log('❌ [VERIFY] No authentication method succeeded');
+            return res.status(401).json({
+                error: {
+                    code: 'UNAUTHORIZED',
+                    message: 'Authentication required. Please provide session cookie or X-API-Key header.',
+                },
+            });
+        }
+
+        console.log('🔍 [VERIFY] Looking for project:', repo, 'for user:', userId);
+
+        // Find project by repo name and user
+        const project = await prisma.project.findFirst({
+            where: {
+                repoFullName: repo, // Changed 'repo_full_name' to 'repoFullName'
+                ownerUserId: userId, // Changed 'user_id' to 'ownerUserId'
+            },
+        });
+
+        if (!project) {
+            console.log('❌ [VERIFY] Project not found');
+            return res.status(404).json({
+                exists: false,
+                error: {
+                    code: 'PROJECT_NOT_FOUND',
+                    message: `No project found for repository "${repo}"`,
+                },
+            });
+        }
+
+        console.log('✅ [VERIFY] Project found:', project.projectId); // Changed 'project_id' to 'projectId'
+
+        res.json({
+            exists: true,
+            project: {
+                id: project.projectId, // Changed 'project_id' to 'projectId'
+                repo: project.repoFullName, // Changed 'repo_full_name' to 'repoFullName'
+                platform: project.platform,
+            },
+        });
+    } catch (error) {
+        console.error('💥 [VERIFY] Error:', error);
+        next(error);
+    }
+});
+
 export default router;

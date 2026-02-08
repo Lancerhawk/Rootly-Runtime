@@ -17,6 +17,7 @@
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "connect-pg-simple": "^10.0.0",
+    "cookie-signature": "^1.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/connect-pg-simple": "^7.0.3",
+    "@types/cookie-signature": "^1.1.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.0",

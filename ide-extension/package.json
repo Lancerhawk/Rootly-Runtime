@@ -1,0 +1,102 @@
+{
+    "name": "rootly",
+    "displayName": "Rootly – Production Errors",
+    "description": "View production errors from your deployed applications directly in VS Code",
+    "version": "0.1.0",
+    "publisher": "rootly",
+    "icon": "resources/icon.svg",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "rootly",
+                    "title": "Rootly",
+                    "icon": "resources/icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "rootly": [
+                {
+                    "id": "rootly.incidents",
+                    "name": "Production Incidents"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "rootly.login",
+                "title": "Rootly: Login"
+            },
+            {
+                "command": "rootly.refresh",
+                "title": "Rootly: Refresh Incidents"
+            },
+            {
+                "command": "rootly.logout",
+                "title": "Rootly: Logout"
+            },
+            {
+                "command": "rootly.connectRepo",
+                "title": "Rootly: Connect Repository"
+            },
+            {
+                "command": "rootly.disconnectRepo",
+                "title": "Rootly: Disconnect Repository",
+                "icon": "$(debug-disconnect)"
+            },
+            {
+                "command": "rootly.refresh",
+                "title": "Rootly: Refresh Incidents",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "rootly.logout",
+                "title": "Rootly: Logout",
+                "icon": "$(sign-out)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "rootly.refresh",
+                    "when": "view == rootly.incidents",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "rootly.disconnectRepo",
+                    "when": "view == rootly.incidents",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "rootly.logout",
+                    "when": "view == rootly.incidents",
+                    "group": "navigation@3"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "package": "vsce package"
+    },
+    "devDependencies": {
+        "@types/node": "^20.x",
+        "@types/vscode": "^1.85.0",
+        "typescript": "^5.3.3",
+        "@vscode/vsce": "^2.22.0"
+    },
+    "dependencies": {}
+}
