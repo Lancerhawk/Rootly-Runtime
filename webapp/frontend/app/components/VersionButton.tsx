@@ -70,7 +70,7 @@ export default function VersionButton() {
             {/* Version Modal */}
             {showModal && selectedVersion && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full h-[700px] flex flex-col">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full h-[90vh] flex flex-col">
                         {/* Header */}
                         <div className="flex items-start justify-between p-8 border-b border-zinc-800 flex-shrink-0">
                             <div className="flex items-center gap-4">
