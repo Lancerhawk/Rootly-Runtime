@@ -309,9 +309,14 @@ app.get('/test/unhandled-rejection', (req, res) => {
     res.json({ message: 'Promise rejection triggered' });
 });
 
-app.get('/test/async-error', async (req, res) => {
-    await failingAsyncOperation();
-    res.json({ message: 'This will never be reached' });
+app.get('/test/async-error', async (req, res, next) => {
+    try {
+        await failingAsyncOperation();
+        res.json({ message: 'This will never be reached' });
+    } catch (error) {
+        // Pass to Express error handler
+        next(error);
+    }
 });
 
 async function failingAsyncOperation() {
