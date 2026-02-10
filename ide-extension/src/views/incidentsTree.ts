@@ -48,7 +48,7 @@ export class IncidentsTreeProvider implements vscode.TreeDataProvider<IncidentTr
             let firstFileLocation: { file: string; line: number } | null = null;
 
             for (const line of stackLines) {
-                const match = line.match(/(?:at\s+|\()([^\s()]+\.(ts|js|tsx|jsx|py|java|go|rb|php)):(\d+)(?::(\d+))?/);
+                const match = line.match(/(?:at\s+.*?\s+)?\(?([^()]+\.(ts|js|tsx|jsx|py|java|go|rb|php)):(\d+)(?::(\d+))?\)?/);
                 if (match) {
                     firstFileLocation = {
                         file: match[1],
@@ -202,10 +202,26 @@ export class IncidentsTreeProvider implements vscode.TreeDataProvider<IncidentTr
                 const occurredDate = new Date(incident.occurred_at);
                 const timeAgo = this.getTimeAgo(occurredDate);
 
-                // Parent item - the incident summary
+                // Parse stack trace to find error location for display
+                const stackLines = incident.stack_trace ? incident.stack_trace.split('\n') : [];
+                let fileLocationText = '';
+
+                for (const line of stackLines) {
+                    // Updated regex to handle Windows paths with spaces
+                    const match = line.match(/(?:at\s+.*?\s+)?\(?([^()]+\.(ts|js|tsx|jsx|py|java|go|rb|php)):(\d+)(?::(\d+))?\)?/);
+                    if (match) {
+                        // Extract just the filename (not full path) for cleaner display
+                        const fullPath = match[1];
+                        const fileName = fullPath.split('/').pop() || fullPath.split('\\').pop() || fullPath;
+                        fileLocationText = `${fileName}:${match[3]}`;
+                        break;
+                    }
+                }
+
+                // Parent item - the incident summary with file location
                 const parentItem = new IncidentTreeItem(
                     incident.summary,
-                    `Click to expand details`,
+                    fileLocationText || `${timeAgo} • Click to expand`,
                     vscode.TreeItemCollapsibleState.Collapsed,
                     undefined,
                     new vscode.ThemeIcon('bug', new vscode.ThemeColor('errorForeground'))
