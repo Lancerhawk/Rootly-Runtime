@@ -8,6 +8,17 @@ Rootly is a developer platform designed to bridge the gap between production fai
 
 Rootly transforms how developers handle production errors by bringing them directly into the IDE. Instead of switching between monitoring dashboards and code editors, developers receive inline notifications about production failures with complete context, making debugging faster and more efficient.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+## 📚 Documentation
+
+- [**Project Structure**](./PROJECT_STRUCTURE.md) - Overview of frontend/backend architecture
+- [**Contributing Guidelines**](./CONTRIBUTING.md) - How to get started with contributions
+- [**Branching Strategy**](./BRANCHING_STRATEGY.md) - Git flow and strict branching rules
+- [**Code of Conduct**](./CODE_OF_CONDUCT.md) - Community standards
+- [**Commit Convention**](./COMMIT_CONVENTION.md) - Conventional commits specification
+
 ### The Problem
 
 - **Context Switching**: Developers waste time switching between error monitoring tools and their IDE
