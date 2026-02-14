@@ -1,6 +1,28 @@
 {
-    "currentVersion": "1.2.3",
+    "currentVersion": "1.2.4",
     "versions": [
+        {
+            "version": "1.2.4",
+            "name": "IDE Path Resolution Fix",
+            "releaseDate": "2026-02-15",
+            "status": "current",
+            "description": "Critical fix for IDE extension 'Go to Error Location' ensuring it works with absolute paths and fuzzy matches in any workspace structure",
+            "features": [
+                {
+                    "title": "IDE Extension v1.1.3 - Enhanced Path Resolution",
+                    "description": "Fixes 'File not found' errors by correctly handling absolute paths from local drives and fuzzy searching in workspace",
+                    "status": "completed"
+                }
+            ],
+            "technicalDetails": {
+                "ideExtension": [
+                    "Absolute path fallback for local development",
+                    "Fuzzy workspace search (including node_modules when relevant)",
+                    "Unified navigation logic for command and UI interaction",
+                    "Published to VS Code Marketplace as v1.1.3"
+                ]
+            }
+        },
         {
             "version": "1.2.3",
             "name": "SDK Security Update",

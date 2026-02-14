@@ -2,7 +2,7 @@
 
 This folder contains the Phase 1 web application with backend and frontend.
 
-**Current Version**: 1.2.3
+**Current Version**: 1.2.4
 
 ## Structure
 

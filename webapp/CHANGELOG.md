@@ -2,6 +2,13 @@
 
 All notable changes to the Rootly web application are documented in this file.
 
+## [1.2.4] - 2026-02-15
+
+### IDE Extension Updates
+- **Path Resolution Fix**: "Go to Error Location" now supports absolute paths from local environments.
+- **Fuzzy Matching**: Enhanced workspace file search to locate files even when inside `node_modules` if inferred from the path.
+- **Unified Navigation**: Consistent file opening logic across all IDE extension entry points.
+
 ## [1.2.3] - 2026-02-14
 
 ### SDK Updates

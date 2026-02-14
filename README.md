@@ -36,9 +36,10 @@ Rootly provides:
 
 ## Key Features
 
-### Current (v1.2.3 - SDK Security Update)
+### Current (v1.2.4 - IDE Path Resolution Fix)
 
-- SDK v1.2.8 - Externalized API configuration for improved security
+- **IDE Extension v1.1.3** - Fixed "Go to Error" path resolution for local and workspace files
+- **SDK v1.2.8** - Externalized API configuration for improved security (from v1.2.3)
 - SDK v1.2.6 - Fixed Express middleware to properly detect 5xx errors
 - SDK v1.2.5 - Added commit SHA fallback for local development
 - IDE Extension v1.1.2 - Fixed file path resolution for Windows absolute paths
@@ -558,7 +559,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Built with modern web technologies and a passion for improving developer experience.
 
-**Current Version**: 1.2.3 - SDK Security Update
+**Current Version**: 1.2.4 - IDE Path Resolution Fix
 
 ---
 
