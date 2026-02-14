@@ -60,6 +60,12 @@ export default function DocsPage() {
 
     useEffect(() => {
         const handleScroll = () => {
+            // Check if user has scrolled to the bottom of the page
+            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+                setActiveSection(tocSections[tocSections.length - 1].id);
+                return;
+            }
+
             const sections = tocSections.map(s => document.getElementById(s.id));
             const scrollPosition = window.scrollY + 150;
 
