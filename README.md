@@ -18,6 +18,7 @@ Rootly transforms how developers handle production errors by bringing them direc
 - [**Branching Strategy**](./BRANCHING_STRATEGY.md) - Git flow and strict branching rules
 - [**Code of Conduct**](./CODE_OF_CONDUCT.md) - Community standards
 - [**Commit Convention**](./COMMIT_CONVENTION.md) - Conventional commits specification
+- [**Security Policy**](./SECURITY.md) - How to report vulnerabilities
 
 ### The Problem
 
