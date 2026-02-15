@@ -386,19 +386,21 @@ function showIncidentDetails(incident: Incident) {
         }
     );
 
-    // Parse stack trace to find first file location
+    // Parse stack trace to find all file locations
     const stackLines = incident.stack_trace ? incident.stack_trace.split('\n') : [];
-    let firstFileLocation: { file: string; line: number } | null = null;
+    const stackFrames: { file: string; line: number; raw: string }[] = [];
 
     for (const line of stackLines) {
         // Match patterns like: at file.ts:42:10 or (file.ts:42:10)
-        const match = line.match(/(?:at\s+|\()([^\s()]+\.(ts|js|tsx|jsx|py|java|go|rb|php)):(\d+)(?::(\d+))?/);
+        // Capture groups: 1=file path, 2=extension, 3=line, 4=column
+        // Note: handles paths with spaces (e.g. Z:\Work Files\)
+        const match = line.match(/(?:at\s+.*?\s+)?\(?([^()]+\.(ts|js|tsx|jsx|py|java|go|rb|php)):(\d+)(?::(\d+))?\)?/);
         if (match) {
-            firstFileLocation = {
+            stackFrames.push({
                 file: match[1],
-                line: parseInt(match[3], 10)
-            };
-            break;
+                line: parseInt(match[3], 10),
+                raw: line.trim()
+            });
         }
     }
 
@@ -442,48 +444,13 @@ function showIncidentDetails(incident: Incident) {
                     font-size: 11px;
                     font-weight: 500;
                 }
-                .action-section {
-                    margin-bottom: 24px;
-                    padding: 16px;
-                    background: var(--vscode-editor-inactiveSelectionBackground);
-                    border-radius: 6px;
-                    border-left: 3px solid var(--vscode-button-background);
-                }
-                .action-title {
-                    font-size: 13px;
-                    font-weight: 600;
-                    margin-bottom: 8px;
-                    color: var(--vscode-foreground);
-                }
-                .action-desc {
-                    font-size: 12px;
-                    color: var(--vscode-descriptionForeground);
-                    margin-bottom: 12px;
-                }
-                .button {
-                    background: var(--vscode-button-background);
-                    color: var(--vscode-button-foreground);
-                    border: none;
-                    padding: 8px 14px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 13px;
-                    font-weight: 500;
-                    transition: background 0.1s;
-                }
-                .button:hover {
-                    background: var(--vscode-button-hoverBackground);
-                }
-                .button:active {
-                    opacity: 0.9;
-                }
                 .section {
                     margin-bottom: 20px;
                 }
                 .section-title {
                     font-weight: 600;
                     font-size: 13px;
-                    margin-bottom: 8px;
+                    margin-bottom: 12px;
                     color: var(--vscode-foreground);
                 }
                 .stack-trace {
@@ -504,6 +471,57 @@ function showIncidentDetails(incident: Incident) {
                     font-family: monospace;
                     border: 1px solid var(--vscode-panel-border);
                 }
+                /* Stack Frames List */
+                .frame-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                }
+                .frame-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: var(--vscode-editor-inactiveSelectionBackground);
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    border-left: 3px solid var(--vscode-button-background);
+                }
+                .frame-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                    overflow: hidden;
+                }
+                .frame-file {
+                    font-weight: 600;
+                    font-size: 13px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .frame-raw {
+                    font-size: 11px;
+                    color: var(--vscode-descriptionForeground);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-family: monospace;
+                }
+                .button {
+                    background: var(--vscode-button-background);
+                    color: var(--vscode-button-foreground);
+                    border: none;
+                    padding: 4px 10px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    margin-left: 12px;
+                }
+                .button:hover {
+                    background: var(--vscode-button-hoverBackground);
+                }
             </style>
         </head>
         <body>
@@ -522,13 +540,22 @@ function showIncidentDetails(incident: Incident) {
                 </div>
             </div>
 
-            ${firstFileLocation ? `
-            <div class="action-section">
-                <div class="action-title">Jump to Error</div>
-                <div class="action-desc">Open the file where this error occurred</div>
-                <button class="button" onclick="goToError()">
-                    → Open ${firstFileLocation.file.split(/[/\\]/).pop()}:${firstFileLocation.line}
-                </button>
+            ${stackFrames.length > 0 ? `
+            <div class="section">
+                <div class="section-title">Stack Frames (${stackFrames.length})</div>
+                <div class="frame-list">
+                    ${stackFrames.map(frame => `
+                        <div class="frame-item">
+                            <div class="frame-info">
+                                <div class="frame-file">${frame.file.split(/[/\\]/).pop()}:${frame.line}</div>
+                                <div class="frame-raw">${frame.raw}</div>
+                            </div>
+                            <button class="button" onclick="goToError('${frame.file.replace(/\\/g, '\\\\')}', ${frame.line})">
+                                Open
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
             ` : ''}
 
@@ -552,11 +579,11 @@ function showIncidentDetails(incident: Incident) {
             <script>
                 const vscode = acquireVsCodeApi();
                 
-                function goToError() {
+                function goToError(file, line) {
                     vscode.postMessage({
                         command: 'goToError',
-                        file: '${firstFileLocation?.file || ''}',
-                        line: ${firstFileLocation?.line || 0}
+                        file: file,
+                        line: line
                     });
                 }
             </script>
